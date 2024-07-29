@@ -3,7 +3,7 @@ import {PostInputModel} from './posts-types'
 
 export type FieldNamesType = keyof BlogInputModel | keyof PostInputModel
 // const f: FieldsType = 'some' // error
-
+export type errorsMessagesType = {message: string, field: FieldNamesType}
 export type OutputErrorsType = {
-    errorsMessages: {message: string, field: FieldNamesType}[]
+    errorsMessages: errorsMessagesType[]
 }
