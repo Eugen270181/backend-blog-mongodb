@@ -3,7 +3,7 @@ import {db} from '../../db/db'
 import {BlogInputModel, BlogViewModel} from '../../input-output-types/blogs-types'
 
 export const blogsRepository = {
-    create(blog: BlogInputModel) {
+    createBlog(blog: BlogInputModel) {
         const newBlog: BlogDbType = {
             id: new Date().toISOString() + Math.random(),
             name: blog.name,
@@ -13,21 +13,21 @@ export const blogsRepository = {
         db.blogs = [...db.blogs, newBlog]
         return newBlog.id
     },
-    find(id: string) {
+    findBlogById(id: string) {
         return db.blogs.find(b => b.id === id)
     },
-    findAndMap(id: string) {
-        const blog = this.find(id)! // ! используем этот метод если проверили существование
+    findBlogAndMap(id: string) {
+        const blog = this.findBlogById(id)! // ! используем этот метод если проверили существование
         return this.map(blog)
     },
-    getAll() {
-
+    findBlogsAndMap() {
+        return db.blogs.map(b => this.map(b))
     },
-    del(id: string) {
-
+    deleteBlog(id: string) {
+        db.blogs= db.blogs.filter(b => !(b.id === id))
     },
-    put(blog: BlogInputModel, id: string) {
-
+    updateBlog(blog: BlogInputModel, id: string) {
+        db.blogs = db.blogs.map(b => b.id === id ? {...b, ...blog} : b)
     },
     map(blog: BlogDbType) {
         const blogForOutput: BlogViewModel = {

@@ -9,10 +9,10 @@ import {adminMiddleware} from '../../global-middlewares/admin-middleware'
 
 export const blogsRouter = Router()
 
-blogsRouter.post('/', ...blogValidators, createBlogController)
+blogsRouter.post('/', adminMiddleware,...blogValidators, createBlogController)
 blogsRouter.get('/', getBlogsController)
 blogsRouter.get('/:id', findBlogValidator, findBlogController)
 blogsRouter.delete('/:id', adminMiddleware, findBlogValidator, delBlogController)
-blogsRouter.put('/:id', findBlogValidator, ...blogValidators, putBlogController)
+blogsRouter.put('/:id', adminMiddleware,findBlogValidator, ...blogValidators, putBlogController)
 
 // не забудьте добавить роут в апп

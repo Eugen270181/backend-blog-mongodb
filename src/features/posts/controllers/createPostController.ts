@@ -3,8 +3,8 @@ import {PostInputModel, PostViewModel} from '../../../input-output-types/posts-t
 import {postsRepository} from '../postsRepository'
 
 export const createPostController = (req: Request<any, any, PostInputModel>, res: Response<PostViewModel>) => {
-    const newPostId = postsRepository.create(req.body)
-    const newPost = postsRepository.findAndMap(newPostId)
+    const newPostId = postsRepository.createPost(req.body)
+    const newPost = postsRepository.findPostAndMap(newPostId)
 
     res
         .status(201)

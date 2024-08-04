@@ -4,33 +4,33 @@ import {PostDbType} from '../../db/post-db-type'
 import {blogsRepository} from '../blogs/blogsRepository'
 
 export const postsRepository = {
-    create(post: PostInputModel) {
+    createPost(post: PostInputModel) {
         const newPost: PostDbType = {
             id: new Date().toISOString() + Math.random(),
             title: post.title,
             content: post.content,
             shortDescription: post.shortDescription,
             blogId: post.blogId,
-            blogName: blogsRepository.find(post.blogId)!.name,
+            blogName: blogsRepository.findBlogById(post.blogId)!.name,
         }
         db.posts = [...db.posts, newPost]
         return newPost.id
     },
-    find(id: string) {
+    findPostById(id: string) {
         return db.posts.find(p => p.id === id)
     },
-    findAndMap(id: string) {
-        const post = this.find(id)! // ! используем этот метод если проверили существование
+    findPostAndMap(id: string) {
+        const post = this.findPostById(id)! // ! используем этот метод если проверили существование
         return this.map(post)
     },
-    getAll() {
+    findPostsAndMap() {
         return db.posts.map(p => this.map(p))
     },
-    del(id: string) {
-
+    deletePost(id: string) {
+        db.posts= db.posts.filter(p => !(p.id === id))
     },
-    put(post: PostInputModel, id: string) {
-        const blog = blogsRepository.find(post.blogId)!
+    updatePost(post: PostInputModel, id: string) {
+        const blog = blogsRepository.findBlogById(post.blogId)!
         db.posts = db.posts.map(p => p.id === id ? {...p, ...post, blogName: blog.name} : p)
     },
     map(post: PostDbType) {
