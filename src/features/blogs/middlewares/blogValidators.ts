@@ -16,12 +16,10 @@ export const websiteUrlValidator = body('websiteUrl').isString().withMessage('no
     .trim().isURL().withMessage('not url')
     .isLength({min: 1, max: 100}).withMessage('more then 100 or 0')
 
-export const findBlogValidator = (req: Request<{id: string}>, res: Response, next: NextFunction) => {
-    const foundBlog = blogsRepository.findBlogById(req.params.id)
+export const findBlogValidator = async (req: Request<{id: string}>, res: Response, next: NextFunction) => {
+    const foundBlog = await blogsRepository.findBlogById(req.params.id)
     if (!foundBlog) {
-        res
-            .status(404)
-            .json({})
+        res.status(404).send({})
         return
     }
 

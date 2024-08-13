@@ -1,9 +1,11 @@
 import {app} from './app'
+import {connectToDB} from "./db/dbMongo";
 import {SETTINGS} from './settings'
+const startApp = async()=>{
+    await connectToDB()
+    app.listen(SETTINGS.PORT, ()=>{
+        console.log(`starting on port:${SETTINGS.PORT}`)
+    })
+}
 
-app.listen(SETTINGS.PORT, () => {
-    console.log('...server started in port ' + SETTINGS.PORT)
-})
-
-// http://localhost:3003/
-// ssh -R 80:localhost:3003 serveo.net
+startApp()

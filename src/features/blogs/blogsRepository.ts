@@ -1,41 +1,43 @@
 import {BlogDbType} from '../../db/blog-db-type'
-import {db} from '../../db/db'
 import {BlogInputModel, BlogViewModel} from '../../input-output-types/blogs-types'
+import {blogCollection} from "../../db/dbMongo"
+import {ObjectId, WithId} from "mongodb"
+
 
 export const blogsRepository = {
-    createBlog(blog: BlogInputModel) {
+    async createBlog(blog: BlogInputModel):Promise<string> {
         const newBlog: BlogDbType = {
-            id: new Date().toISOString() + Math.random(),
-            name: blog.name,
-            description: blog.description,
-            websiteUrl: blog.websiteUrl,
+            ...blog,
+            createdAt: new Date().toISOString(),
+            isMembership:false
         }
-        db.blogs = [...db.blogs, newBlog]
-        return newBlog.id
+        const result = await blogCollection.insertOne(newBlog);
+        return result.insertedId.toString() // return _id -objectId
     },
-    findBlogById(id: string) {
-        return db.blogs.find(b => b.id === id)
+    async findBlogById(id: string) {
+        return blogCollection.findOne({ _id: new ObjectId(id) });
     },
-    findBlogAndMap(id: string) {
-        const blog = this.findBlogById(id)! // ! используем этот метод если проверили существование
+    async findBlogAndMap(id: string) {
+        const blog = (await blogCollection.findOne({ _id: new ObjectId(id) }))! // ! используем этот метод если проверили существование
         return this.map(blog)
     },
-    findBlogsAndMap() {
-        return db.blogs.map(b => this.map(b))
+    async findBlogsAndMap() {
+        const blogs = await blogCollection.find({}).toArray()
+        return blogs.map(b => this.map(b))
     },
-    deleteBlog(id: string) {
-        db.blogs= db.blogs.filter(b => !(b.id === id))
+    async deleteBlog(id:string):Promise<boolean>{
+        const result = await blogCollection.deleteOne({ _id: new ObjectId(id) });
+        return result.deletedCount > 0;
     },
-    updateBlog(blog: BlogInputModel, id: string) {
-        db.blogs = db.blogs.map(b => b.id === id ? {...b, ...blog} : b)
+    async updateBlog(blog: BlogInputModel, id: string) {
+        const result = await blogCollection.updateOne(
+            { _id: new ObjectId(id) },
+            { $set: { ...blog } }
+        );
+        return result.modifiedCount > 0;
     },
-    map(blog: BlogDbType) {
-        const blogForOutput: BlogViewModel = {
-            id: blog.id,
-            description: blog.description,
-            websiteUrl: blog.websiteUrl,
-            name: blog.name,
-        }
-        return blogForOutput
+    map(blog: WithId<BlogDbType>): BlogViewModel{
+        const { _id, ...blogForOutput } = blog;//деструктуризация
+        return {id:blog._id.toString(),...blogForOutput}
     },
 }

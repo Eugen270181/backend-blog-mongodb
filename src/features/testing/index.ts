@@ -1,9 +1,9 @@
 import {Router} from 'express'
-import {setDB} from '../../db/db'
+import {clearDB} from '../../db/dbMongo'
 
 export const testingRouter = Router()
 
-testingRouter.delete('/all-data', (req, res) => {
-    setDB()
-    res.status(204).json({})
+testingRouter.delete('/all-data', async (req, res) => {
+    await clearDB()
+    res.send(204)
 })

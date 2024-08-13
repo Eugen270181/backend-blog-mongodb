@@ -1,5 +1,5 @@
 import {req} from './helpers/test-helpers'
-import {db, setDB} from '../src/db/db'
+import {dbMongo, setDB} from '../src/db/dbMemory'
 import {SETTINGS} from '../src/settings'
 import {codedAuth, createString, dataset1, dataset2} from './helpers/datasets'
 import {PostInputModel} from '../src/input-output-types/posts-types'
@@ -34,7 +34,7 @@ describe('/posts', () => {
         expect(res.body.blogName).toEqual(dataset1.blogs[0].name)
         expect(typeof res.body.id).toEqual('string')
 
-        expect(res.body).toEqual(db.posts[0])
+        expect(res.body).toEqual(dbMongo.posts[0])
     })
     it('shouldn\'t create 401', async () => {
         setDB(dataset1)
@@ -52,7 +52,7 @@ describe('/posts', () => {
 
         // console.log(res.body)
 
-        expect(db.posts.length).toEqual(0)
+        expect(dbMongo.posts.length).toEqual(0)
     })
     it('shouldn\'t create', async () => {
         setDB()
@@ -77,7 +77,7 @@ describe('/posts', () => {
         expect(res.body.errorsMessages[2].field).toEqual('content')
         expect(res.body.errorsMessages[3].field).toEqual('blogId')
 
-        expect(db.posts.length).toEqual(0)
+        expect(dbMongo.posts.length).toEqual(0)
     })
     it('should get empty array', async () => {
         setDB() // очистка базы данных если нужно
@@ -132,7 +132,7 @@ describe('/posts', () => {
 
         // console.log(res.body)
 
-        expect(db.posts.length).toEqual(0)
+        expect(dbMongo.posts.length).toEqual(0)
     })
     it('shouldn\'t del', async () => {
         setDB()
@@ -171,7 +171,7 @@ describe('/posts', () => {
 
         // console.log(res.body)
 
-        expect(db.posts[0]).toEqual({...db.posts[0], ...post, blogName: dataset2.blogs[1].name})
+        expect(dbMongo.posts[0]).toEqual({...dbMongo.posts[0], ...post, blogName: dataset2.blogs[1].name})
     })
     it('shouldn\'t update 404', async () => {
         setDB()
@@ -207,7 +207,7 @@ describe('/posts', () => {
 
         // console.log(res.body)
 
-        expect(db).toEqual(dataset2)
+        expect(dbMongo).toEqual(dataset2)
         expect(res.body.errorsMessages.length).toEqual(4)
         expect(res.body.errorsMessages[0].field).toEqual('title')
         expect(res.body.errorsMessages[1].field).toEqual('shortDescription')
@@ -231,6 +231,6 @@ describe('/posts', () => {
 
         // console.log(res.body)
 
-        expect(db).toEqual(dataset2)
+        expect(dbMongo).toEqual(dataset2)
     })
 })

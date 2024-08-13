@@ -1,4 +1,4 @@
-import {DBType, ReadonlyDBType} from '../../src/db/db'
+import {DBType, ReadonlyDBType} from '../../src/db/dbMemory'
 import {BlogDbType} from '../../src/db/blog-db-type'
 import {PostDbType} from '../../src/db/post-db-type'
 import {fromUTF8ToBase64} from '../../src/global-middlewares/admin-middleware'

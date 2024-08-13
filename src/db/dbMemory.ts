@@ -12,7 +12,7 @@ export type ReadonlyDBType = { // тип для dataset
     // some: any[]
 }
 
-export const db: DBType = { // создаём базу данных (пока это просто переменная)
+export const dbMongo: DBType = { // создаём базу данных (пока это просто переменная)
     blogs: [],
     posts: [],
     // some: []
@@ -21,15 +21,15 @@ export const db: DBType = { // создаём базу данных (пока э
 // функция для быстрой очистки/заполнения базы данных для тестов
 export const setDB = (dataset?: Partial<ReadonlyDBType>) => {
     if (!dataset) { // если в функцию ничего не передано - то очищаем базу данных
-        db.blogs = []
-        db.posts = []
+        dbMongo.blogs = []
+        dbMongo.posts = []
         // db.some = []
         return
     }
 
     // если что-то передано - то заменяем старые значения новыми,
     // не ссылки - а глубокое копирование, чтобы не изменять dataset
-    db.blogs = dataset.blogs?.map(b => ({...b})) || db.blogs
-    db.posts = dataset.posts?.map(p => ({...p})) || db.posts
+    dbMongo.blogs = dataset.blogs?.map(b => ({...b})) || dbMongo.blogs
+    dbMongo.posts = dataset.posts?.map(p => ({...p})) || dbMongo.posts
     // db.some = dataset.some?.map(s => ({...s})) || db.some
 }
