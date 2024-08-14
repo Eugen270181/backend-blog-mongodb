@@ -7,8 +7,9 @@ import {blogsRepository} from '../blogs/blogsRepository'
 
 export const postsRepository = {
     async createPost(post: PostInputModel) {
+        const {title, shortDescription, content, blogId} = post
         const newPost: PostDbType = {
-            ...post,
+            ...{title, shortDescription, content, blogId},
             blogName: (await blogsRepository.findBlogById(post.blogId))!.name,
             createdAt: new Date().toISOString()
         }
@@ -16,10 +17,12 @@ export const postsRepository = {
         return result.insertedId.toString() // return _id -objectId
     },
     async findPostById(id: string) {
+        const isIdValid = ObjectId.isValid(id);
+        if (!isIdValid) return null
         return postCollection.findOne({ _id: new ObjectId(id) });
     },
     async findPostAndMap(id: string) {
-        const post = ( await postCollection.findOne({ _id: new ObjectId(id) }) )! // ! используем этот метод если проверили существование
+        const post = ( await postsRepository.findPostById(id) )! // ! используем этот метод если проверили существование
         return this.map(post)
     },
     async findPostsAndMap() {
@@ -31,10 +34,11 @@ export const postsRepository = {
         return result.deletedCount > 0;
     },
     async updatePost(post: PostInputModel, id: string) {
+        const {title, shortDescription, content, blogId} = post
         const blog = ( await blogsRepository.findBlogById(post.blogId) )!
         const result = await postCollection.updateOne(
             { _id: new ObjectId(id) },
-            { $set: { ...post,  blogName:blog.name} }
+            { $set: { ...{title, shortDescription, content, blogId},  blogName:blog.name} }
         );
         return result.modifiedCount > 0;
     },

@@ -6,8 +6,9 @@ import {ObjectId, WithId} from "mongodb"
 
 export const blogsRepository = {
     async createBlog(blog: BlogInputModel):Promise<string> {
+        const {name, description, websiteUrl} = blog
         const newBlog: BlogDbType = {
-            ...blog,
+            ...{name, description, websiteUrl},
             createdAt: new Date().toISOString(),
             isMembership:false
         }
@@ -15,10 +16,12 @@ export const blogsRepository = {
         return result.insertedId.toString() // return _id -objectId
     },
     async findBlogById(id: string) {
+        const isIdValid = ObjectId.isValid(id);
+        if (!isIdValid) return null
         return blogCollection.findOne({ _id: new ObjectId(id) });
     },
     async findBlogAndMap(id: string) {
-        const blog = (await blogCollection.findOne({ _id: new ObjectId(id) }))! // ! используем этот метод если проверили существование
+        const blog = (await this.findBlogById(id))! // ! используем этот метод если проверили существование
         return this.map(blog)
     },
     async findBlogsAndMap() {
@@ -30,9 +33,10 @@ export const blogsRepository = {
         return result.deletedCount > 0;
     },
     async updateBlog(blog: BlogInputModel, id: string) {
+        const {name, description, websiteUrl} = blog
         const result = await blogCollection.updateOne(
             { _id: new ObjectId(id) },
-            { $set: { ...blog } }
+            { $set: { ...{name, description, websiteUrl} } }
         );
         return result.modifiedCount > 0;
     },

@@ -9,6 +9,7 @@ export const inputCheckErrorsMiddleware = (req: Request, res: Response<OutputErr
             {message: error.msg, field: (error.type==='field'?error.path:'unknown') as FieldNamesType})).
             array({onlyFirstError: true});
         res.status(400).send({errorsMessages:result})
+        return
     }
 
     next()
