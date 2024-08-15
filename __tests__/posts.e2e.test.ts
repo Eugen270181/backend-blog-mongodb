@@ -2,8 +2,9 @@ import {req} from './helpers/test-helpers'
 import {dbMongo, setDB} from '../src/db/dbMemory'
 import {SETTINGS} from '../src/settings'
 import {codedAuth, createString, dataset1, dataset2} from './helpers/datasets'
-import {PostInputModel} from '../src/input-output-types/posts-types'
-import {BlogInputModel} from "../src/input-output-types/blogs-types";
+
+import {CreateBlogInputModel} from "../src/features/blogs/types/input/create-blog-input.type";
+import {CreatePostInputModel} from "../src/features/posts/types/input/create-post-input.type";
 
 describe('/posts', () => {
     // beforeAll(async () => { // очистка базы данных перед началом тестирования
@@ -12,7 +13,7 @@ describe('/posts', () => {
 
     it('should create', async () => {
         setDB(dataset1)
-        const newPost: PostInputModel = {
+        const newPost: CreatePostInputModel = {
             title: 't1',
             shortDescription: 's1',
             content: 'c1',
@@ -38,7 +39,7 @@ describe('/posts', () => {
     })
     it('shouldn\'t create 401', async () => {
         setDB(dataset1)
-        const newPost: PostInputModel = {
+        const newPost: CreatePostInputModel = {
             title: 't1',
             shortDescription: 's1',
             content: 'c1',
@@ -56,7 +57,7 @@ describe('/posts', () => {
     })
     it('shouldn\'t create', async () => {
         setDB()
-        const newPost: PostInputModel = {
+        const newPost: CreatePostInputModel = {
             title: createString(31),
             content: createString(1001),
             shortDescription: createString(101),
@@ -156,7 +157,7 @@ describe('/posts', () => {
     })
     it('should update', async () => {
         setDB(dataset2)
-        const post: PostInputModel = {
+        const post: CreatePostInputModel = {
             title: 't2',
             shortDescription: 's2',
             content: 'c2',
@@ -175,7 +176,7 @@ describe('/posts', () => {
     })
     it('shouldn\'t update 404', async () => {
         setDB()
-        const post: PostInputModel = {
+        const post: CreatePostInputModel = {
             title: 't1',
             shortDescription: 's1',
             content: 'c1',
@@ -192,7 +193,7 @@ describe('/posts', () => {
     })
     it('shouldn\'t update2', async () => {
         setDB(dataset2)
-        const post: PostInputModel = {
+        const post: CreatePostInputModel = {
             title: createString(31),
             content: createString(1001),
             shortDescription: createString(101),
@@ -216,7 +217,7 @@ describe('/posts', () => {
     })
     it('shouldn\'t update 401', async () => {
         setDB(dataset2)
-        const post: PostInputModel = {
+        const post: CreatePostInputModel = {
             title: createString(31),
             content: createString(1001),
             shortDescription: createString(101),

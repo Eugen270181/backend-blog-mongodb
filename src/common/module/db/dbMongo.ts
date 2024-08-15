@@ -1,7 +1,11 @@
-import {Db, Collection, ObjectId , MongoClient} from "mongodb"
-import {BlogDbType} from './blog-db-type'
-import {PostDbType} from './post-db-type'
-import {SETTINGS} from '../settings'
+import {Db, Collection, MongoClient} from "mongodb"
+import {BlogDbType} from '../../types/db/blog-db-type'
+import {PostDbType} from '../../types/db/post-db-type'
+import {SETTINGS} from "../../../settings";
+
+
+
+
 // получение доступа к бд
 const client: MongoClient = new MongoClient(SETTINGS.MONGO_URL)
 export const dbMongo: Db = client.db(SETTINGS.MONGO_DB);
@@ -11,17 +15,6 @@ export const blogCollection: Collection<BlogDbType> = dbMongo.collection<BlogDbT
 
 export const postCollection: Collection<PostDbType> = dbMongo.collection<PostDbType>(SETTINGS.POST_COLLECTION_NAME)
 
-export const clearDB = async () => {
-    try {
-        await blogCollection.drop()
-        await postCollection.drop()
-        console.log('drop blog and post collections')
-        return true
-    } catch (e) {
-        console.log(e)
-        return false
-    }
-}
 // проверка подключения к бд
 export const connectToDB = async () => {
     try {

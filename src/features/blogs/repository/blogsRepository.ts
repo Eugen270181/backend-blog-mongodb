@@ -1,11 +1,13 @@
-import {BlogDbType} from '../../db/blog-db-type'
-import {BlogInputModel, BlogViewModel} from '../../input-output-types/blogs-types'
-import {blogCollection} from "../../db/dbMongo"
+import {BlogDbType} from '../../../common/types/db/blog-db-type'
+import {blogCollection} from "../../../common/module/db/dbMongo"
 import {ObjectId, WithId} from "mongodb"
+import {CreateBlogInputModel} from "../types/input/create-blog-input.type";
+import {BlogOutputModel} from "../types/output/blog-output.type";
+import {UpdateBlogInputType} from "../types/input/update-blog-input.type";
 
 
 export const blogsRepository = {
-    async createBlog(blog: BlogInputModel):Promise<string> {
+    async createBlog(blog: CreateBlogInputModel):Promise<string> {
         const {name, description, websiteUrl} = blog
         const newBlog: BlogDbType = {
             ...{name, description, websiteUrl},
@@ -21,7 +23,7 @@ export const blogsRepository = {
         return blogCollection.findOne({ _id: new ObjectId(id) });
     },
     async findBlogAndMap(id: string) {
-        const blog = (await this.findBlogById(id))! // ! используем этот метод если проверили существование
+        const blog = ( await blogsRepository.findBlogById(id) )! // ! используем этот метод если проверили существование
         return this.map(blog)
     },
     async findBlogsAndMap() {
@@ -32,7 +34,7 @@ export const blogsRepository = {
         const result = await blogCollection.deleteOne({ _id: new ObjectId(id) });
         return result.deletedCount > 0;
     },
-    async updateBlog(blog: BlogInputModel, id: string) {
+    async updateBlog(blog: UpdateBlogInputType, id: string) {
         const {name, description, websiteUrl} = blog
         const result = await blogCollection.updateOne(
             { _id: new ObjectId(id) },
@@ -40,7 +42,7 @@ export const blogsRepository = {
         );
         return result.modifiedCount > 0;
     },
-    map(blog: WithId<BlogDbType>): BlogViewModel{
+    map(blog: WithId<BlogDbType>): BlogOutputModel{
         const { _id, ...blogForOutput } = blog;//деструктуризация
         return {id:blog._id.toString(),...blogForOutput}
     },

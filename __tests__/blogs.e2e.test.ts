@@ -1,8 +1,8 @@
 import {req} from './helpers/test-helpers'
 import {dbMongo, setDB} from '../src/db/dbMemory'
 import {SETTINGS} from '../src/settings'
-import {BlogInputModel} from '../src/input-output-types/blogs-types'
 import {codedAuth, createString, dataset1} from './helpers/datasets'
+import {CreateBlogInputModel} from "../src/features/blogs/types/input/create-blog-input.type";
 
 describe('/blogs', () => {
     // beforeAll(async () => { // очистка базы данных перед началом тестирования
@@ -11,7 +11,7 @@ describe('/blogs', () => {
 
     it('should create', async () => {
         setDB()
-        const newBlog: BlogInputModel = {
+        const newBlog: CreateBlogInputModel = {
             name: 'n1',
             description: 'd1',
             websiteUrl: 'http://some.com',
@@ -34,7 +34,7 @@ describe('/blogs', () => {
     })
     it('shouldn\'t create 401', async () => {
         setDB()
-        const newBlog: BlogInputModel = {
+        const newBlog: CreateBlogInputModel = {
             name: 'n1',
             description: 'd1',
             websiteUrl: 'http://some.com',
@@ -51,7 +51,7 @@ describe('/blogs', () => {
     })
     it('shouldn\'t create', async () => {
         setDB()
-        const newBlog: BlogInputModel = {
+        const newBlog: CreateBlogInputModel = {
             name: createString(16),
             description: createString(501),
             websiteUrl: createString(101),
@@ -149,7 +149,7 @@ describe('/blogs', () => {
     })
     it('should update', async () => {
         setDB(dataset1)
-        const blog: BlogInputModel = {
+        const blog: CreateBlogInputModel = {
             name: 'n2',
             description: 'd2',
             websiteUrl: 'http://some2.com',
@@ -167,7 +167,7 @@ describe('/blogs', () => {
     })
     it('shouldn\'t update 404', async () => {
         setDB()
-        const blog: BlogInputModel = {
+        const blog: CreateBlogInputModel = {
             name: 'n1',
             description: 'd1',
             websiteUrl: 'http://some.com',
@@ -183,7 +183,7 @@ describe('/blogs', () => {
     })
     it('shouldn\'t update2', async () => {
         setDB(dataset1)
-        const blog: BlogInputModel = {
+        const blog: CreateBlogInputModel = {
             name: createString(16),
             description: createString(501),
             websiteUrl: createString(101),
@@ -205,7 +205,7 @@ describe('/blogs', () => {
     })
     it('shouldn\'t update 401', async () => {
         setDB(dataset1)
-        const blog: BlogInputModel = {
+        const blog: CreateBlogInputModel = {
             name: createString(16),
             description: createString(501),
             websiteUrl: createString(101),

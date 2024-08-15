@@ -1,10 +1,10 @@
 import {body} from 'express-validator'
-import {inputCheckErrorsMiddleware} from '../../../global-middlewares/inputCheckErrorsMiddleware'
-import {blogsRepository} from '../../blogs/blogsRepository'
+import {inputCheckErrorsMiddleware} from '../../../common/middleware/inputCheckErrorsMiddleware'
+import {blogsRepository} from '../../blogs/repository/blogsRepository'
 import {NextFunction, Request, Response} from 'express'
-import {postsRepository} from '../postsRepository'
+import {postsRepository} from '../repository/postsRepository'
 import {WithId} from "mongodb";
-import {BlogDbType} from "../../../db/blog-db-type";
+import {BlogDbType} from "../../../common/types/db/blog-db-type";
 
 export const titleValidator = body('title').isString().withMessage('not string')
     .trim().isLength({min: 1, max: 30}).withMessage('more then 30 or 0')

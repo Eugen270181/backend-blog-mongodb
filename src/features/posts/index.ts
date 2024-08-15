@@ -5,7 +5,7 @@ import {findPostController} from './controllers/findPostController'
 import {delPostController} from './controllers/delPostController'
 import {putPostController} from './controllers/putPostController'
 import {findPostValidator, postValidators} from './middlewares/postValidators'
-import {adminMiddleware} from '../../global-middlewares/admin-middleware'
+import {adminMiddleware} from '../../common/middleware/admin-middleware'
 
 export const postsRouter = Router()
 

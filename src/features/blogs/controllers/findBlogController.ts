@@ -1,8 +1,8 @@
 import {Request, Response} from 'express'
-import {BlogViewModel} from '../../../input-output-types/blogs-types'
-import {blogsRepository} from '../blogsRepository'
+import {blogsRepository} from '../repository/blogsRepository'
+import {BlogOutputModel} from "../types/output/blog-output.type";
 
-export const findBlogController = async (req: Request<{id: string}>, res: Response<BlogViewModel | {}>) => {
+export const findBlogController = async (req: Request<{id: string}>, res: Response<BlogOutputModel | {}>) => {
     const foundBlog = await blogsRepository.findBlogAndMap(req.params.id)
     res.status(200).send(foundBlog)
 }
