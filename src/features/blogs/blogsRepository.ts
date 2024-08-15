@@ -15,7 +15,7 @@ export const blogsRepository = {
         const result = await blogCollection.insertOne(newBlog);
         return result.insertedId.toString() // return _id -objectId
     },
-    async findBlogById(id: string) {
+    async findBlogById(id: string):Promise<WithId<BlogDbType>|null> {
         const isIdValid = ObjectId.isValid(id);
         if (!isIdValid) return null
         return blogCollection.findOne({ _id: new ObjectId(id) });

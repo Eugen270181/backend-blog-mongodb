@@ -18,7 +18,7 @@ export const postsRepository = {
     },
     async findPostById(id: string) {
         const isIdValid = ObjectId.isValid(id);
-        if (!isIdValid) return null
+        if (!isIdValid) {throw new Error('Incorrect postId!')}
         return postCollection.findOne({ _id: new ObjectId(id) });
     },
     async findPostAndMap(id: string) {

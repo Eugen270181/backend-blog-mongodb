@@ -4,6 +4,7 @@ import {FieldNamesType, OutputErrorsType, errorsMessagesType} from '../input-out
 
 export const inputCheckErrorsMiddleware = (req: Request, res: Response<OutputErrorsType>, next: NextFunction) => {
     const e = validationResult(req)
+    console.log(e.array().length)
     if (!e.isEmpty()) {
         const result = e.formatWith((error: ValidationError):errorsMessagesType => (
             {message: error.msg, field: (error.type==='field'?error.path:'unknown') as FieldNamesType})).
