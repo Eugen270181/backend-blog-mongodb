@@ -1,6 +1,6 @@
 import {DBType, ReadonlyDBType} from '../../src/db/dbMemory'
-import {BlogDbType} from '../../src/common/types/db/blog-db-type'
-import {PostDbType} from '../../src/common/types/db/post-db-type'
+import {BlogDbModelType} from '../../src/common/types/db/blog-db-model.type'
+import {PostDbModelType} from '../../src/common/types/db/post-db-model.type'
 import {fromUTF8ToBase64} from '../../src/common/middleware/admin-middleware'
 import {SETTINGS} from '../../src/settings'
 

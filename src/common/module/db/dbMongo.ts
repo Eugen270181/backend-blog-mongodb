@@ -1,6 +1,6 @@
 import {Db, Collection, MongoClient} from "mongodb"
-import {BlogDbType} from '../../types/db/blog-db-type'
-import {PostDbType} from '../../types/db/post-db-type'
+import {BlogDbModelType} from '../../types/db/blog-db-model.type'
+import {PostDbModelType} from '../../types/db/post-db-model.type'
 import {SETTINGS} from "../../../settings";
 
 
@@ -11,9 +11,9 @@ const client: MongoClient = new MongoClient(SETTINGS.MONGO_URL)
 export const dbMongo: Db = client.db(SETTINGS.MONGO_DB);
 
 // получение доступа к коллекциям
-export const blogCollection: Collection<BlogDbType> = dbMongo.collection<BlogDbType>(SETTINGS.BLOG_COLLECTION_NAME)
+export const blogCollection: Collection<BlogDbModelType> = dbMongo.collection<BlogDbModelType>(SETTINGS.BLOG_COLLECTION_NAME)
 
-export const postCollection: Collection<PostDbType> = dbMongo.collection<PostDbType>(SETTINGS.POST_COLLECTION_NAME)
+export const postCollection: Collection<PostDbModelType> = dbMongo.collection<PostDbModelType>(SETTINGS.POST_COLLECTION_NAME)
 
 // проверка подключения к бд
 export const connectToDB = async () => {

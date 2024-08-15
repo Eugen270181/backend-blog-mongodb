@@ -1,15 +1,15 @@
-import {BlogDbType} from '../../../common/types/db/blog-db-type'
+import {BlogDbModelType} from '../../../common/types/db/blog-db-model.type'
 import {blogCollection} from "../../../common/module/db/dbMongo"
 import {ObjectId, WithId} from "mongodb"
 import {CreateBlogInputModel} from "../types/input/create-blog-input.type";
 import {BlogOutputModel} from "../types/output/blog-output.type";
-import {UpdateBlogInputType} from "../types/input/update-blog-input.type";
+import {UpdateBlogInputModel} from "../types/input/update-blog-input.type";
 
 
 export const blogsRepository = {
     async createBlog(blog: CreateBlogInputModel):Promise<string> {
         const {name, description, websiteUrl} = blog
-        const newBlog: BlogDbType = {
+        const newBlog: BlogDbModelType = {
             ...{name, description, websiteUrl},
             createdAt: new Date().toISOString(),
             isMembership:false
@@ -17,7 +17,7 @@ export const blogsRepository = {
         const result = await blogCollection.insertOne(newBlog);
         return result.insertedId.toString() // return _id -objectId
     },
-    async findBlogById(id: string):Promise<WithId<BlogDbType>|null> {
+    async findBlogById(id: string):Promise<WithId<BlogDbModelType>|null> {
         const isIdValid = ObjectId.isValid(id);
         if (!isIdValid) return null
         return blogCollection.findOne({ _id: new ObjectId(id) });
@@ -34,7 +34,7 @@ export const blogsRepository = {
         const result = await blogCollection.deleteOne({ _id: new ObjectId(id) });
         return result.deletedCount > 0;
     },
-    async updateBlog(blog: UpdateBlogInputType, id: string) {
+    async updateBlog(blog: UpdateBlogInputModel, id: string) {
         const {name, description, websiteUrl} = blog
         const result = await blogCollection.updateOne(
             { _id: new ObjectId(id) },
@@ -42,7 +42,7 @@ export const blogsRepository = {
         );
         return result.modifiedCount > 0;
     },
-    map(blog: WithId<BlogDbType>): BlogOutputModel{
+    map(blog: WithId<BlogDbModelType>): BlogOutputModel{
         const { _id, ...blogForOutput } = blog;//деструктуризация
         return {id:blog._id.toString(),...blogForOutput}
     },

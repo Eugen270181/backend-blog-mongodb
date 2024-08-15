@@ -1,4 +1,4 @@
-import {PostDbType} from '../../../common/types/db/post-db-type'
+import {PostDbModelType} from '../../../common/types/db/post-db-model.type'
 import {postCollection} from "../../../common/module/db/dbMongo"
 import {ObjectId, WithId} from "mongodb"
 import {blogsRepository} from '../../blogs/repository/blogsRepository'
@@ -10,7 +10,7 @@ import {UpdatePostInputModel} from "../types/input/update-post-input.type";
 export const postsRepository = {
     async createPost(post: CreatePostInputModel) {
         const {title, shortDescription, content, blogId} = post
-        const newPost: PostDbType = {
+        const newPost: PostDbModelType = {
             ...{title, shortDescription, content, blogId},
             blogName: (await blogsRepository.findBlogById(post.blogId))!.name,
             createdAt: new Date().toISOString()
@@ -44,7 +44,7 @@ export const postsRepository = {
         );
         return result.modifiedCount > 0;
     },
-    map(post:WithId<PostDbType>):PostOutputModel{
+    map(post:WithId<PostDbModelType>):PostOutputModel{
         const { _id, ...postForOutput } = post;//деструктуризация
         return {id:post._id.toString(),...postForOutput}
     },
