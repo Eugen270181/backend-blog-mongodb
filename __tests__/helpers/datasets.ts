@@ -1,7 +1,7 @@
 import {DBType, ReadonlyDBType} from '../../src/db/dbMemory'
-import {BlogDbType} from '../../src/db/blog-db-type'
-import {PostDbType} from '../../src/db/post-db-type'
-import {fromUTF8ToBase64} from '../../src/global-middlewares/admin-middleware'
+import {BlogDbType} from '../../src/common/types/db/blog-db-type'
+import {PostDbType} from '../../src/common/types/db/post-db-type'
+import {fromUTF8ToBase64} from '../../src/common/middleware/admin-middleware'
 import {SETTINGS} from '../../src/settings'
 
 // готовые данные для переиспользования в тестах

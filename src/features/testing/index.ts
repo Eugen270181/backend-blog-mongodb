@@ -1,9 +1,7 @@
 import {Router} from 'express'
-import {clearDB} from '../../db/dbMongo'
-
+import {clearDBTestingController} from './controllers/clearDBTestingController'
+import {adminMiddleware} from "../../common/middleware/admin-middleware"
 export const testingRouter = Router()
 
-testingRouter.delete('/all-data', async (req, res) => {
-    await clearDB()
-    res.send(204)
-})
+//testingRouter.use(adminMiddleware)
+testingRouter.delete('/all-data', clearDBTestingController)

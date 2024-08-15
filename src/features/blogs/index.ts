@@ -5,7 +5,7 @@ import {findBlogController} from './controllers/findBlogController'
 import {delBlogController} from './controllers/delBlogController'
 import {putBlogController} from './controllers/putBlogController'
 import {blogValidators, findBlogValidator} from './middlewares/blogValidators'
-import {adminMiddleware} from '../../global-middlewares/admin-middleware'
+import {adminMiddleware} from '../../common/middleware/admin-middleware'
 
 export const blogsRouter = Router()
 

@@ -1,5 +1,5 @@
 import {app} from './app'
-import {connectToDB} from "./db/dbMongo";
+import {connectToDB} from "./common/module/db/dbMongo";
 import {SETTINGS} from './settings'
 const startApp = async()=>{
     await connectToDB()
